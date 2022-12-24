@@ -1,0 +1,45 @@
+{
+  "name": "@qavajs/steps-accessibility",
+  "version": "0.0.1",
+  "description": "Steps to perform accessibility checks",
+  "main": "./index.js",
+  "scripts": {
+    "build": "tsc",
+    "test:wdio:e2e": "ts-node node_modules/.bin/qavajs run --config test-e2e/config.wdio.ts",
+    "test:playwright:e2e": "ts-node node_modules/.bin/qavajs run --config test-e2e/config.playwright.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qavajs/steps-accessibility.git"
+  },
+  "authors": [
+    "Alexandr Galichenko"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/qavajs/steps-accessibility/issues"
+  },
+  "homepage": "https://github.com/qavajs/steps-accessibility#readme",
+  "devDependencies": {
+    "@cucumber/cucumber": "^8.9.1",
+    "@qavajs/cli": "^0.0.13",
+    "@qavajs/console-formatter": "^0.1.2",
+    "@qavajs/html-formatter": "^0.0.4",
+    "@qavajs/memory": "^1.1.1",
+    "@qavajs/steps-playwright": "^0.0.7",
+    "@qavajs/steps-wdio": "^0.0.14",
+    "@qavajs/xunit-formatter": "^0.0.3",
+    "@types/chai": "^4.3.4",
+    "@types/fs-extra": "^9.0.13",
+    "@types/jest": "^29.2.4",
+    "chai": "^4.3.7",
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "^4.5.2",
+    "@axe-core/webdriverio": "^4.5.2",
+    "axe-html-reporter": "^2.2.3"
+  }
+}
