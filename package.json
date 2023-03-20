@@ -13,7 +13,8 @@
     "url": "git+https://github.com/qavajs/steps-accessibility.git"
   },
   "authors": [
-    "Alexandr Galichenko"
+    "Alexandr Galichenko",
+    "Alexandr Legchilov"
   ],
   "license": "MIT",
   "bugs": {
