@@ -1,2 +1,11 @@
-## 0.0.1
-initial implementation
+# Change Log
+
+All notable changes to the "@qavajs/steps-accessibility" will be documented in this file.
+
+Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+
+## [0.0.2]
+- :beetle: fixed attachment for failed check 
+
+## [0.0.1]
+- :rocket: initial implementation
