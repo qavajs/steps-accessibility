@@ -31,8 +31,8 @@ When('I perform accessibility check', async function () {
         : new AxeBuilderWDIO( { client: global.browser });
     const axeConfig = config.axe ? config.axe : (axe: AxeBuilderPlaywright | AxeBuilderWDIO) => axe;
     const results = await axeConfig(axe).analyze();
+    this.attach(htmlAttachment(results), 'base64:text/html');
     if (results.violations.length > 0) {
         throw new Error(`Accessibility check failed! Found ${results.violations.length} violations`);
     }
-    this.attach(htmlAttachment(results), 'base64:text/html');
 });
