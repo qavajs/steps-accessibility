@@ -15,5 +15,6 @@ jobs:
           node-version: 18
       - run: npm ci
       - run: npm run build
+      - run: npx playwright install
       - run: npm run test:wdio:e2e
       - run: npm run test:playwright:e2e
