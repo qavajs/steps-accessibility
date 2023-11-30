@@ -4,12 +4,12 @@ import AxeBuilder from '@axe-core/webdriverio';
 export default {
     paths: ['test-e2e/features/*.feature'],
     require: [
-        'node_modules/@qavajs/steps-wdio/lib/*.js',
+        'node_modules/@qavajs/steps-wdio/index.js',
         'test-e2e/step-definitions/*.ts',
         'src/*.ts'
     ],
     format: [
-        '@qavajs/xunit-formatter:test-e2e/report.xml',
+        'junit:test-e2e/report.xml',
         '@qavajs/console-formatter',
         '@qavajs/html-formatter:test-e2e/report.html'
     ],
@@ -26,10 +26,9 @@ export default {
         }
     },
     axe: function (instance: AxeBuilder) {
-        return instance.withTags('wcag2a')
+        return instance.withTags('section508')
     },
     defaultTimeout: 30000,
     memory: new Memory(),
-    parallel: 1,
-    publishQuiet: true
+    parallel: 1
 }
