@@ -24,7 +24,7 @@ export default {
         }
     },
     axe: function (instance: AxeBuilder) {
-        return instance.withTags('cat.color')
+        return instance.withTags('cat.aria')
     },
     defaultTimeout: 30000,
     memory: new Memory(),
