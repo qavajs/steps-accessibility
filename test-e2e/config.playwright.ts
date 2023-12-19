@@ -5,6 +5,7 @@ export default {
     paths: ['test-e2e/features/*.feature'],
     require: [
         'node_modules/@qavajs/steps-playwright/index.js',
+        'node_modules/@qavajs/steps-memory/index.js',
         'test-e2e/step-definitions/*.ts',
         'src/*.ts'
     ],
@@ -23,7 +24,7 @@ export default {
         }
     },
     axe: function (instance: AxeBuilder) {
-        return instance.withTags('section508')
+        return instance.withTags('cat.aria')
     },
     defaultTimeout: 30000,
     memory: new Memory(),

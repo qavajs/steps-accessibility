@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .table-container {
+            display: flex;
+            flex-flow: column nowrap;
+            background-color: white;
+            width: 99%;
+            margin: 0 auto;
+            border-radius: 4px;
+            border: 1px solid #DADADA;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
+        }
+
+        .table-row {
+            display: flex;
+            flex-flow: row nowrap;
+            width: 100%;
+            border-bottom: 1px solid #dadada;
+        }
+
+        .table-header {
+            background-color: #ececec;
+            color: #3e3e3e;
+            font-weight: bold;
+        }
+
+        .table-cell {
+            display: flex;
+            flex: 1;
+            font-size: 14px;
+            padding: 8px 0;
+
+            align-items: center;
+            transition: all 0.15s ease-in-out;
+            flex-wrap: wrap;
+            align-content: flex-start;
+        }
+
+        .align-center {
+            justify-content: center;
+        }
+
+        .table-row:hover {
+            background-color: #F0F0F0;
+        }
+
+        .table-row:last-child {
+            border-bottom: 0;
+        }
+
+        .violation {
+            padding-top: 5px;
+            background-color: #F0F0F0;
+            border-top: #1D1E26 1px solid;
+        }
+
+        .tag {
+            background-color: lightcyan;
+            border-radius: 5px;
+            border: 1px grey solid;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            padding: 1px;
+        }
+
+        .critical {
+            background-color: #EE6666;
+        }
+
+        .serious {
+            background-color: #E67e17;
+        }
+
+        .moderate {
+            background-color: #FDD63B;
+        }
+
+        .minor {
+            background-color: #2E9E68;
+        }
+    </style>
+</head>
+<body>
+<h1>Report</h1>
+<div class="table-container" role="table" >
+    <div class="table-row table-header">
+        <div class="table-cell align-center">Test Engine</div>
+        <div class="table-cell">Environment</div>
+        <div class="table-cell">URL</div>
+    </div>
+    <div class="table-row">
+        <div id="testEngine" class="table-cell align-center">Test Engine</div>
+        <div id="environment" class="table-cell">Environment</div>
+        <div id="testURL" class="table-cell">URL</div>
+    </div>
+</div>
+<h1>Violations</h1>
+<div class="table-container" role="table" >
+    <div class="table-row table-header">
+        <div class="table-cell align-center">ID</div>
+        <div class="table-cell">Tags</div>
+        <div class="table-cell">Description</div>
+        <div class="table-cell">Help</div>
+        <div class="table-cell">Help URL</div>
+    </div>
+    <div id="violations" class="table-body"></div>
+</div>
+<h1>Passed</h1>
+<div class="table-container" role="table" >
+    <div class="table-row table-header">
+        <div class="table-cell align-center">ID</div>
+        <div class="table-cell">Tags</div>
+        <div class="table-cell">Description</div>
+        <div class="table-cell">Help</div>
+        <div class="table-cell">Help URL</div>
+    </div>
+    <div id="passes" class="table-body"></div>
+</div>
+<h1>Inapplicable</h1>
+<div class="table-container" role="table" >
+    <div class="table-row table-header">
+        <div class="table-cell align-center">ID</div>
+        <div class="table-cell">Tags</div>
+        <div class="table-cell">Description</div>
+        <div class="table-cell">Help</div>
+        <div class="table-cell">Help URL</div>
+    </div>
+    <div id="inapplicable" class="table-body"></div>
+</div>
+<h1>Incomplete</h1>
+<div class="table-container" role="table" >
+    <div class="table-row table-header">
+        <div class="table-cell align-center">ID</div>
+        <div class="table-cell">Tags</div>
+        <div class="table-cell">Description</div>
+        <div class="table-cell">Help</div>
+        <div class="table-cell">Help URL</div>
+    </div>
+    <div id="incomplete"  class="table-body"></div>
+</div>
+
+<script>
+    window.results = {{ RESULTS }}
+
+    drawTitle();
+    drawViolations();
+    drawPasses();
+    drawInapplicable();
+    drawIncomplete();
+
+    function drawTitle() {
+        document.querySelector('#testEngine').innerText = results.testEngine.name;
+        document.querySelector('#environment').innerText = Object.entries(results.testEnvironment)
+            .map(([option, value]) => `${option}: ${value};`)
+            .join(' ');
+        document.querySelector('#testURL').innerText = `<a href="${results.url}">${results.url}</a>`;
+    }
+    function drawInapplicable() {
+        const inapplicableTable = document.querySelector('#inapplicable');
+
+        let table = '';
+        for (const inapplicable of results.inapplicable) {
+            table += `<div class="table-row">
+            <div class="table-cell align-center">${inapplicable.id}</div>
+            <div class="table-cell">${tags(inapplicable.tags)}</div>
+            <div class="table-cell">${escapeHTML(inapplicable.description)}</pre></div>
+            <div class="table-cell">${escapeHTML(inapplicable.help)}</div>
+            <div class="table-cell"><a href="${inapplicable.helpUrl}">${inapplicable.helpUrl}</a></div>
+            </div>`
+        }
+
+        inapplicableTable.innerHTML = table;
+    }
+
+    function drawIncomplete() {
+        const incompleteTable = document.querySelector('#incomplete');
+
+        let table = '';
+
+        for (const incomplete of results.incomplete) {
+            table += `<div class="table-row">
+            <div class="table-cell align-center">${incomplete.id}</div>
+            <div class="table-cell">${tags(incomplete.tags)}</div>
+            <div class="table-cell">${escapeHTML(incomplete.description)}</pre></div>
+            <div class="table-cell">${escapeHTML(incomplete.help)}</div>
+            <div class="table-cell"><a href="${incomplete.helpUrl}">${incomplete.helpUrl}</a></div>
+            </div>`
+        }
+
+        incompleteTable.innerHTML = table
+    }
+
+    function drawPasses() {
+        const passesTable = document.querySelector('#passes');
+
+        let table = '';
+
+        for (const pass of results.passes) {
+            table += `<div class="table-row">
+            <div class="table-cell align-center">${pass.id}</div>
+            <div class="table-cell">${tags(pass.tags)}</div>
+            <div class="table-cell">${escapeHTML(pass.description)}</pre></div>
+            <div class="table-cell">${escapeHTML(pass.help)}</div>
+            <div class="table-cell"><a href="${pass.helpUrl}">${pass.helpUrl}</a></div>
+            </div>`
+        }
+
+        passesTable.innerHTML = table
+    }
+
+    function drawViolations() {
+        const violationsTable = document.querySelector('#violations');
+        let table = '';
+        for (const violation of results.violations) {
+            table += `<div class="violation table-row">
+            <div class="table-cell align-center">${violation.id}</div>
+            <div class="table-cell">${tags(violation.tags)}</div>
+            <div class="table-cell">${escapeHTML(violation.description)}</pre></div>
+            <div class="table-cell">${escapeHTML(violation.help)}</div>
+            <div class="table-cell"><a href="${violation.helpUrl}">${violation.helpUrl}</a></div>
+            </div>`
+
+            if (violation.nodes.length > 0) {
+                table += `<div class="violation-nodes">`;
+                table += `<div class="violation-header table-row table-header">
+                    <div class="table-cell align-center">Impact</div>
+                    <div class="table-cell">Element</div>
+                    <div class="table-cell">Target</div>
+                    <div class="table-cell">Failure Summary</div>
+                </div>`;
+
+                for (const node of violation.nodes) {
+                    table += `<div class="table-row">
+                    <div class="table-cell align-center"><div class="tag ${node.impact}"">${node.impact}</div></div>
+                    <div class="table-cell">${escapeHTML(node.html)}</div>
+                    <div class="table-cell">${node.target}</div>
+                    <div class="table-cell">${escapeHTML(node.failureSummary)}</div>
+                    </div>`;
+                }
+                table += `</div>`;
+            }
+        }
+        violationsTable.innerHTML = table;
+    }
+
+    function escapeHTML(string) {
+        const pre = document.createElement('pre');
+        const text = document.createTextNode(string);
+        pre.appendChild(text);
+        return pre.innerHTML;
+    }
+
+    function tags(tags) {
+        return tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+    }
+
+</script>
+</body>
+</html>
