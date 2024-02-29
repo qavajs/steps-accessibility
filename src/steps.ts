@@ -2,9 +2,8 @@ import { When, IWorld } from '@cucumber/cucumber';
 import AxeBuilderPlaywright from '@axe-core/playwright';
 import AxeBuilderWDIO from '@axe-core/webdriverio';
 import { AxeResults } from 'axe-core';
-import { readFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
 import memory from '@qavajs/memory';
+import { createHtmlReport } from 'axe-html-reporter';
 
 declare global {
     var browser: any;
@@ -12,9 +11,13 @@ declare global {
     var config: any;
 }
 
-async function htmlAttachment(results: AxeResults) {
-    const reportTemplate = await readFile(resolve('template/reportTemplate.html'), 'utf-8');
-    const reportHTML = reportTemplate.replace('{{ RESULTS }}', JSON.stringify(results));
+function htmlAttachment(results: AxeResults) {
+    const reportHTML = createHtmlReport({
+        results,
+        options: {
+            doNotCreateReportFile: true,
+        },
+    });
     return Buffer.from(reportHTML).toString('base64');
 }
 
@@ -25,7 +28,7 @@ async function audit(world: IWorld) {
         : new AxeBuilderWDIO( { client: global.browser });
     const axeConfig = config.axe ? config.axe : (axe: AxeBuilderPlaywright | AxeBuilderWDIO) => axe;
     const results = await axeConfig(axe).analyze();
-    world.attach(await htmlAttachment(results), 'base64:text/html');
+    world.attach(htmlAttachment(results), 'base64:text/html');
     return results;
 }
 /**
