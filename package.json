@@ -1,6 +1,6 @@
 {
   "name": "@qavajs/steps-accessibility",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Steps to perform accessibility checks",
   "main": "./index.js",
   "scripts": {
@@ -22,26 +22,23 @@
   },
   "homepage": "https://github.com/qavajs/steps-accessibility#readme",
   "devDependencies": {
-    "@cucumber/cucumber": "^10.3.1",
-    "@qavajs/cli": "^0.35.0",
-    "@qavajs/console-formatter": "^0.7.1",
-    "@qavajs/html-formatter": "^0.15.4",
-    "@qavajs/memory": "^1.7.0",
-    "@qavajs/po": "^1.9.0",
-    "@qavajs/po-playwright": "^0.13.0",
-    "@qavajs/steps-memory": "^0.15.0",
-    "@qavajs/steps-playwright": "^0.44.0",
-    "@qavajs/steps-wdio": "^0.47.0",
-    "@types/chai": "^4.3.12",
+    "@cucumber/cucumber": "^11.2.0",
+    "@qavajs/core": "^2.2.0",
+    "@qavajs/console-formatter": "^0.8.0",
+    "@qavajs/html-formatter": "^0.18.1",
+    "@qavajs/steps-memory": "^2.0.0",
+    "@qavajs/steps-playwright": "^2.2.0",
+    "@qavajs/steps-wdio": "^2.1.1",
+    "@types/chai": "^4.3.20",
     "@types/fs-extra": "^11.0.4",
-    "@types/jest": "^29.5.12",
-    "chai": "^4.3.10",
+    "@types/jest": "^29.5.14",
+    "chai": "^4.5.0",
     "jest": "^29.7.0",
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "@axe-core/playwright": "^4.8.5",
-    "@axe-core/webdriverio": "^4.8.5",
-    "axe-html-reporter": "^2.2.3"
+    "@axe-core/playwright": "^4.10.1",
+    "@axe-core/webdriverio": "^4.10.1",
+    "axe-html-reporter": "^2.2.11"
   }
 }
