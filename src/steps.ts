@@ -1,15 +1,9 @@
-import { When, IWorld } from '@cucumber/cucumber';
+import { When } from '@cucumber/cucumber';
 import AxeBuilderPlaywright from '@axe-core/playwright';
 import AxeBuilderWDIO from '@axe-core/webdriverio';
 import { AxeResults } from 'axe-core';
-import memory from '@qavajs/memory';
 import { createHtmlReport } from 'axe-html-reporter';
-
-declare global {
-    var browser: any;
-    var page: any;
-    var config: any;
-}
+import {MemoryValue} from "@qavajs/core";
 
 function htmlAttachment(results: AxeResults) {
     const reportHTML = createHtmlReport({
@@ -21,12 +15,14 @@ function htmlAttachment(results: AxeResults) {
     return Buffer.from(reportHTML).toString('base64');
 }
 
-async function audit(world: IWorld) {
-    if (!global.page && !global.browser) throw new Error('Browser instance does not exist! Make sure that webdriverio or playwright steps are installed')
-    const axe = global.page
-        ? new AxeBuilderPlaywright({ page: global.page })
-        : new AxeBuilderWDIO( { client: global.browser });
-    const axeConfig = config.axe ? config.axe : (axe: AxeBuilderPlaywright | AxeBuilderWDIO) => axe;
+type World = { config: any, wdio?: any, playwright?: any, attach: (attachment: any, mime: string) => void };
+
+async function audit(world: World) {
+    if (!world.wdio && !world.playwright) throw new Error('Browser instance does not exist! Make sure that webdriverio or playwright steps are installed')
+    const axe = world.playwright
+        ? new AxeBuilderPlaywright({ page: world.playwright.page})
+        : new AxeBuilderWDIO( { client: world.wdio.browser });
+    const axeConfig = world.config.axe ? world.config.axe : (axe: AxeBuilderPlaywright | AxeBuilderWDIO) => axe;
     const results = await axeConfig(axe).analyze();
     world.attach(htmlAttachment(results), 'base64:text/html');
     return results;
@@ -36,7 +32,7 @@ async function audit(world: IWorld) {
  * @example
  * When I perform accessibility check
  */
-When('I perform accessibility check', async function (this: IWorld) {
+When('I perform accessibility check', async function (this: World) {
     const results = await audit(this);
     if (results.violations.length > 0) {
         throw new Error(`Accessibility check failed! Found ${results.violations.length} violations`);
@@ -50,7 +46,7 @@ When('I perform accessibility check', async function (this: IWorld) {
  * When I perform accessibility check and save results as 'axeReport'
  * Then I expect '$axeReport.violations.length' to equal '0'
  */
-When('I perform accessibility check and save results as {string}', async function (this: IWorld, memoryKey) {
+When('I perform accessibility check and save results as {value}', async function (this: World, memoryKey: MemoryValue) {
     const results = await audit(this);
-    memory.setValue(memoryKey, results);
+    memoryKey.set(results);
 });

@@ -18,6 +18,7 @@ export default {
         logLevel: 'warn',
         capabilities: {
             browserName: 'chrome',
+            'wdio:enforceWebDriverClassic': true,
             'goog:chromeOptions': {
                 args: [
                     '--window-size=1280,720',
