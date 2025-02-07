@@ -13,13 +13,6 @@ module.exports = {
             'node_modules/@qavajs/steps-wdio/index.js', //corresponding driver library should be imported first
             'node_modules/@qavajs/steps-accessibility/index.js'
         ],
-        // to customize axe instance define axe property which is a function that accepts AxeBuilder instance
-        // more info: 
-        // https://www.npmjs.com/package/@axe-core/webdriverio
-        // https://www.npmjs.com/package/@axe-core/playwright
-        axe: function (axe) {
-            return axe.withTags('wcag2a')
-        },
         format: [
             '@qavajs/html-formatter:report.html'
         ],
