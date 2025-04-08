@@ -4,7 +4,6 @@ import { createHtmlReport } from 'axe-html-reporter';
 import { MemoryValue } from '@qavajs/core';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { parse } from 'node:path';
-import any = jasmine.any;
 
 function htmlAttachment(results: AxeResults) {
     const reportHTML = createHtmlReport({
