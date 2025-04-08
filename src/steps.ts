@@ -2,7 +2,8 @@ import { When } from '@cucumber/cucumber';
 import { AxeResults, RunOptions } from 'axe-core';
 import { createHtmlReport } from 'axe-html-reporter';
 import { MemoryValue } from '@qavajs/core';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { parse } from 'node:path';
 
 function htmlAttachment(results: AxeResults) {
     const reportHTML = createHtmlReport({
@@ -16,7 +17,7 @@ function htmlAttachment(results: AxeResults) {
 
 type World = { config: any, wdio?: any, playwright?: any, attach: (attachment: any, mime: string) => void };
 
-async function audit(world: World, options?: RunOptions) {
+async function audit(world: World, options?: RunOptions & { saveAs?: string }) {
     if (!world.wdio && !world.playwright) throw new Error('Browser instance does not exist! Make sure that webdriverio or playwright steps are installed');
     const axeCode = await readFile('node_modules/axe-core/axe.min.js', { encoding: 'utf8' });
     let results;
@@ -29,6 +30,11 @@ async function audit(world: World, options?: RunOptions) {
         await world.wdio.browser.execute(axeCode);
         // @ts-ignore
         results = await world.wdio.browser.executeAsync((options, done) => window.axe.run(options).then(done), options);
+    }
+    if (options?.saveAs) {
+        const path = parse(options.saveAs);
+        await mkdir(path.dir, { recursive: true });
+        await writeFile(options.saveAs, JSON.stringify(results));
     }
     world.attach(htmlAttachment(results), 'base64:text/html');
     return results;
@@ -61,6 +67,7 @@ When('I perform accessibility check:', async function (this: World, optionsMulti
     const options = JSON.parse(optionsMultiline);
     const results = await audit(this, options);
     if (results.violations.length > 0) {
+        console.log(results)
         throw new Error(`Accessibility check failed! Found ${results.violations.length} violations`);
     }
 });

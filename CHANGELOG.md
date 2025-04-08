@@ -4,6 +4,15 @@ All notable changes to the "@qavajs/steps-accessibility" will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [3.1.0]
+- added capability to save json results via _saveAs_ property
+  And I perform accessibility check:
+  """
+  {
+  "saveAs": "results/one/report.json"
+  }
+  """
+
 ## [3.0.0]
 - moved to common axe-core library
 - removed `axe` property configuration
