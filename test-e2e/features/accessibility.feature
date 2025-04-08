@@ -1,7 +1,7 @@
 Feature: Accessibility
 
   Scenario: perform accessibility check
-    When I open 'https://qavajs.github.io/' url
+    When I open 'https://qavajs.github.io/docs/intro' url
     And I perform accessibility check:
     """
     {
@@ -10,7 +10,7 @@ Feature: Accessibility
     """
 
   Scenario: perform accessibility check and save results
-    When I open 'https://qavajs.github.io/' url
+    When I open 'https://qavajs.github.io/docs/intro' url
     And I perform accessibility check and save results as 'axeReport':
     """
     {
@@ -19,3 +19,12 @@ Feature: Accessibility
     """
     Then I expect '$axeReport.violations.length' to equal '0'
 
+  Scenario: perform accessibility check of particular scope
+    When I open 'https://qavajs.github.io/docs/intro' url
+    And I perform accessibility check:
+    """
+    {
+      "context": ["[aria-label=\"Expand sidebar category 'Steps'\"]"],
+      "runOnly": ["wcag2a"]
+    }
+    """
