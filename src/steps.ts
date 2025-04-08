@@ -2,7 +2,8 @@ import { When } from '@cucumber/cucumber';
 import { AxeResults, RunOptions } from 'axe-core';
 import { createHtmlReport } from 'axe-html-reporter';
 import { MemoryValue } from '@qavajs/core';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { parse } from 'node:path';
 
 function htmlAttachment(results: AxeResults) {
     const reportHTML = createHtmlReport({
@@ -16,19 +17,33 @@ function htmlAttachment(results: AxeResults) {
 
 type World = { config: any, wdio?: any, playwright?: any, attach: (attachment: any, mime: string) => void };
 
-async function audit(world: World, options?: RunOptions) {
+async function audit(world: World, options?: RunOptions & { context?: any, saveAs?: string }) {
     if (!world.wdio && !world.playwright) throw new Error('Browser instance does not exist! Make sure that webdriverio or playwright steps are installed');
     const axeCode = await readFile('node_modules/axe-core/axe.min.js', { encoding: 'utf8' });
     let results;
+    const context = options?.context;
     if (world.playwright) {
         await world.playwright.page.evaluate(axeCode);
-        // @ts-ignore
-        results = await world.playwright.page.evaluate(options => window.axe.run(options), options);
+        results = await world.playwright.page.evaluate(({ context, options }: any) => {
+            const accContext = context ?? document;
+            // @ts-ignore
+            return window.axe.run(accContext, options);
+        }, { context, options });
     }
     if (world.wdio) {
         await world.wdio.browser.execute(axeCode);
-        // @ts-ignore
-        results = await world.wdio.browser.executeAsync((options, done) => window.axe.run(options).then(done), options);
+        results = await world.wdio.browser.executeAsync(({ context, options }: any, done: any) => {
+            const accContext = context ?? window.document;
+            // @ts-ignore
+            return window.axe.run(accContext, options).then(done)
+        }, { context, options });
+    }
+    if (options?.saveAs) {
+        const path = parse(options.saveAs);
+        if (path.dir) {
+            await mkdir(path.dir, { recursive: true });
+        }
+        await writeFile(options.saveAs, JSON.stringify(results));
     }
     world.attach(htmlAttachment(results), 'base64:text/html');
     return results;

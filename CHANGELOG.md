@@ -4,6 +4,27 @@ All notable changes to the "@qavajs/steps-accessibility" will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [3.1.0]
+- added capability to save json results via _saveAs_ property
+```gherkin
+And I perform accessibility check:
+  """
+  {
+  "saveAs": "results/one/report.json"
+  }
+  """
+```
+- added _context_ property to provide context of accessibility analysis
+```gherkin
+And I perform accessibility check:
+  """
+  {
+    "context": ["[aria-label=\"Expand sidebar category 'Steps'\"]"],
+    "runOnly": ["wcag2a"]
+  }
+  """
+```
+
 ## [3.0.0]
 - moved to common axe-core library
 - removed `axe` property configuration
