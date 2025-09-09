@@ -1,9 +1,11 @@
 # @qavajs/steps-accessibility
-Steps to perform accessibility checks using axe library.
+qavajs steps to perform accessibility checks using axe library.
 Library can work on top of playwright and webdriverio drivers
 
 ## Installation
-`npm install @qavajs/steps-accessibility`
+```
+npm install @qavajs/steps-accessibility
+```
 
 ## Configuration
 ```javascript
@@ -14,7 +16,7 @@ module.exports = {
             'node_modules/@qavajs/steps-accessibility/index.js'
         ],
         format: [
-            '@qavajs/html-formatter:report.html'
+            ['@qavajs/html-formatter', 'report.html']
         ],
     }
 }

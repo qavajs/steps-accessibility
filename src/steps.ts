@@ -1,7 +1,6 @@
-import { When } from '@cucumber/cucumber';
 import { AxeResults, RunOptions } from 'axe-core';
 import { createHtmlReport } from 'axe-html-reporter';
-import { MemoryValue } from '@qavajs/core';
+import { type MemoryValue, When } from '@qavajs/core';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { parse } from 'node:path';
 
