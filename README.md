@@ -9,16 +9,14 @@ npm install @qavajs/steps-accessibility
 
 ## Configuration
 ```javascript
-module.exports = {
-    default: {
-        require: [
-            'node_modules/@qavajs/steps-wdio/index.js', //corresponding driver library should be imported first
-            'node_modules/@qavajs/steps-accessibility/index.js'
-        ],
-        format: [
-            ['@qavajs/html-formatter', 'report.html']
-        ],
-    }
+export default {
+    require: [
+        'node_modules/@qavajs/steps-wdio/index.js', //corresponding driver library should be imported first
+        'node_modules/@qavajs/steps-accessibility/index.js'
+    ],
+    format: [
+        ['@qavajs/html-formatter', 'report.html']
+    ],
 }
 ```
 
