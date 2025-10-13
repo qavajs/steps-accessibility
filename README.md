@@ -21,7 +21,7 @@ export default {
 ```
 
 ## Usage
-Lib provides `I perform accessibility check` step that creates axe instance, performs checks and attach html report in base 64 format
+Library provides `I perform accessibility check` step that creates axe instance, performs checks and attach html report in base 64 format
 
 ```gherkin
 Feature: Accessibility
