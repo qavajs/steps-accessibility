@@ -10,7 +10,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 And I perform accessibility check:
   """
   {
-  "saveAs": "results/one/report.json"
+    "saveAs": "results/one/report.json"
   }
   """
 ```
