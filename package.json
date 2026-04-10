@@ -25,16 +25,14 @@
     "@cucumber/cucumber": "^12.7.0",
     "@qavajs/console-formatter": "^1.1.1",
     "@qavajs/core": "^2.13.0",
-    "@qavajs/html-formatter": "^1.0.0",
+    "@qavajs/html-formatter": "^1.2.0",
     "@qavajs/steps-memory": "^2.0.1",
-    "@qavajs/steps-playwright": "^2.14.1",
-    "@qavajs/steps-wdio": "^2.13.1",
-    "@types/jest": "^30.0.0",
-    "jest": "^30.2.0",
+    "@qavajs/steps-playwright": "^2.15.0",
+    "@qavajs/steps-wdio": "^2.14.0",
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "axe-core": "^4.11.1",
+    "axe-core": "^4.11.2",
     "axe-html-reporter": "^2.2.11"
   },
   "keywords": [
