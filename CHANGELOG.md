@@ -4,6 +4,11 @@ All notable changes to the "@qavajs/steps-accessibility" will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [3.2.0]
+- replaced `axe-html-reporter` with a built-in HTML reporter (no extra dependencies, dark mode support)
+- replaced jest with vitest
+- fixed wdio adapter: replaced removed `executeAsync` with `execute` (webdriverio v9)
+
 ## [3.1.0]
 - added capability to save json results via _saveAs_ property
 ```gherkin

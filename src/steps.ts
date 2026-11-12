@@ -1,17 +1,11 @@
 import { AxeResults, RunOptions } from 'axe-core';
-import { createHtmlReport } from 'axe-html-reporter';
+import { createHtmlReport } from './report';
 import { type MemoryValue, When } from '@qavajs/core';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { parse } from 'node:path';
 
 function htmlAttachment(results: AxeResults) {
-    const reportHTML = createHtmlReport({
-        results,
-        options: {
-            doNotCreateReportFile: true,
-        },
-    });
-    return Buffer.from(reportHTML).toString('base64');
+    return Buffer.from(createHtmlReport(results)).toString('base64');
 }
 
 type World = { config: any, wdio?: any, playwright?: any, attach: (attachment: any, mime: string) => void };
@@ -31,10 +25,10 @@ async function audit(world: World, options?: RunOptions & { context?: any, saveA
     }
     if (world.wdio) {
         await world.wdio.browser.execute(axeCode);
-        results = await world.wdio.browser.executeAsync(({ context, options }: any, done: any) => {
+        results = await world.wdio.browser.execute(({ context, options }: any) => {
             const accContext = context ?? window.document;
             // @ts-ignore
-            return window.axe.run(accContext, options).then(done)
+            return window.axe.run(accContext, options);
         }, { context, options });
     }
     if (options?.saveAs) {
