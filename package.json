@@ -1,12 +1,13 @@
 {
   "name": "@qavajs/steps-accessibility",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Steps to perform accessibility checks",
   "main": "./index.js",
   "scripts": {
     "build": "tsc",
     "test:wdio:e2e": "qavajs run --config test-e2e/config.wdio.ts",
-    "test:playwright:e2e": "qavajs run --config test-e2e/config.playwright.ts"
+    "test:playwright:e2e": "qavajs run --config test-e2e/config.playwright.ts",
+    "test": "vitest run"
   },
   "repository": {
     "type": "git",
@@ -22,18 +23,20 @@
   },
   "homepage": "https://github.com/qavajs/steps-accessibility#readme",
   "devDependencies": {
-    "@cucumber/cucumber": "^12.7.0",
-    "@qavajs/console-formatter": "^1.1.1",
-    "@qavajs/core": "^2.13.0",
-    "@qavajs/html-formatter": "^1.2.0",
-    "@qavajs/steps-memory": "^2.0.1",
-    "@qavajs/steps-playwright": "^2.15.0",
-    "@qavajs/steps-wdio": "^2.14.0",
-    "ts-node": "^10.9.2"
+    "@cucumber/cucumber": "^13.3.0",
+    "@qavajs/console-formatter": "^1.2.1",
+    "@qavajs/core": "^2.18.1",
+    "@qavajs/html-formatter": "^1.4.0",
+    "@qavajs/steps-memory": "^2.1.1",
+    "@qavajs/steps-playwright": "^2.18.0",
+    "@qavajs/steps-wdio": "^3.0.0",
+    "@vitest/coverage-v8": "^5.1.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.0"
   },
   "dependencies": {
-    "axe-core": "^4.11.2",
-    "axe-html-reporter": "^2.2.11"
+    "axe-core": "^4.14.0"
   },
   "keywords": [
     "test",

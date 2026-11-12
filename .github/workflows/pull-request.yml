@@ -9,12 +9,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 24
+          cache: npm
       - run: npm ci
       - run: npm run build
-      - run: npx playwright install
+      - run: npm test
+      - run: npx playwright install --with-deps
       - run: npm run test:wdio:e2e
       - run: npm run test:playwright:e2e
